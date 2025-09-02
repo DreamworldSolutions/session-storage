@@ -1,0 +1,26 @@
+{
+  "name": "@dreamworld/session-storage",
+  "version": "0.0.0-development",
+  "description": "It is used to store and sync session data across multiple tabs/windows.",
+  "main": "session-storage.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Dhruval Kodinariya",
+  "license": "MIT",
+  "devDependencies": {
+    "semantic-release": "17.0.8"
+  },
+  "release": {
+    "branches": [
+      "+([0-9])?(.{+([0-9]),x}).x",
+      "main",
+      {
+          "name": "feature/*",
+          "prerelease": "${name.replace(/^feature\\//g, \"\")}",
+          "channel": "${name.replace(/^feature\\//g, \"\")}"
+      }
+    ]
+  }
+}
