@@ -37,7 +37,11 @@ yarn add @dreamworld/session-storage
 ```javascript
 import SessionStorage from "@dreamworld/session-storage";
 
-const session = new SessionStorage("myapp_session"); //The argument "myapp_session" is the prefix used for all session keys.
+const session = new SessionStorage({ 
+  timeoutOnCloseTab: 0, // Default: 5000
+  timeoutOnHeartBeat: 5000, //Default: 30000
+  heartbeatInterval: 15000 //Default: 10000
+});
 ```
 
 ### Set a value
@@ -70,9 +74,12 @@ session.clear(); //This removes all entries with the prefix `myapp_session_*` fr
 
 ### Subscribe to changes (cross-tab sync)
 ```javascript
-session.subscribe((data) => {
+const unsubscribe = session.subscribe((data) => {
   console.log("Session updated:", data); // Object with all session keys
 });
+
+//Unsubscribe
+unsubscribe();
 //This callback fires whenever session data changes — either in the same tab or in another tab.
 ```
 
