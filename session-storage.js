@@ -36,6 +36,7 @@ import { uuidBase62 } from '@dreamworld/uuid-base62';
  * Note: This class does not handle complex data types or circular references.
  *       Values are stored as JSON strings in localStorage.
  */
+
 export default class SessionStorage {
   static prefix = `__dw_ss_`;
   static internalPrefix = `${SessionStorage.prefix}___$$_`;
