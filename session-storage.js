@@ -170,7 +170,7 @@ export default class SessionStorage {
       }
 
       // Notify subscribers
-      this._notifySubscribers();
+      this._notifySubscribers(sessionKey);
     };
 
     window.addEventListener('storage', this._storageListener);
@@ -273,10 +273,10 @@ export default class SessionStorage {
     keysToRemove.forEach(key => localStorage.removeItem(key));
   }
 
-  _notifySubscribers() {
+  _notifySubscribers(key) {
     this._subscribers.forEach(callback => {
       try {
-        callback({ ...this._cache });
+        callback({ [key]: this._cache[key] });
       } catch (e) {
         console.warn('Error in session storage subscriber:', e);
       }
@@ -288,7 +288,6 @@ export default class SessionStorage {
     this._cache[key] = value;
     const storageKey = `${SessionStorage.prefix}${key}`;
     localStorage.setItem(storageKey, JSON.stringify(value));
-    this._notifySubscribers();
   }
 
   get(key) {
@@ -299,7 +298,6 @@ export default class SessionStorage {
     delete this._cache[key];
     const storageKey = `${SessionStorage.prefix}${key}`;
     localStorage.removeItem(storageKey);
-    this._notifySubscribers();
   }
 
   clear() {
@@ -313,7 +311,6 @@ export default class SessionStorage {
       }
     }
     keysToRemove.forEach(key => localStorage.removeItem(key));
-    this._notifySubscribers();
   }
 
   getAll() {
