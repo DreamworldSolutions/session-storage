@@ -4,12 +4,19 @@
   "description": "It is used to store and sync session data across multiple tabs/windows.",
   "main": "session-storage.js",
   "type": "module",
+  "scripts": {
+    "start": "web-dev-server --root-dir . --app-index demo/index.html --node-resolve --port 8080"
+  },
   "publishConfig": {
     "access": "public"
   },
   "author": "Dhruval Kodinariya",
   "license": "MIT",
+  "dependencies": {
+    "@dreamworld/uuid-base62": "^1.2.0"
+  },
   "devDependencies": {
+    "@web/dev-server": "^0.4.6",
     "semantic-release": "17.0.8"
   },
   "release": {
@@ -17,9 +24,9 @@
       "+([0-9])?(.{+([0-9]),x}).x",
       "main",
       {
-          "name": "feature/*",
-          "prerelease": "${name.replace(/^feature\\//g, \"\")}",
-          "channel": "${name.replace(/^feature\\//g, \"\")}"
+        "name": "feature/*",
+        "prerelease": "${name.replace(/^feature\\//g, \"\")}",
+        "channel": "${name.replace(/^feature\\//g, \"\")}"
       }
     ]
   }
