@@ -1,111 +1,55 @@
-# SessionStorage
+# @dreamworld/session-storage
 
-A lightweight **cross-tab session storage** for browsers that:
-
-- Stores session keys in **localStorage** with a common prefix.  
-- Keeps a **fast in-memory cache** for instant access.  
-- Shares data across multiple tabs **in real-time**.  
-- **Clears session automatically** when all tabs are closed or the browser is killed.  
-- Provides event hooks to react to session updates.
+A browser-side utility for storing and syncing session data across multiple tabs/windows, distributed as a public ES Module package.
 
 ---
 
-## ✨ Features
+## 1. User Guide
 
-- 🔑 **Per-key storage**: Each key is stored separately in `localStorage` with a prefix (`session_key`).
-- ⚡ **In-memory cache**: Reads are served from memory for performance.  
-- 🔄 **Cross-tab sync**: Updates propagate live across all open tabs.  
-- 🧹 **Auto-cleanup**: Session is wiped when the last tab closes or the browser is killed.  
-- 📡 **Heartbeat mechanism**: Ensures cleanup even if browser crashes.  
-- 🛠 **Easy integration**: Works out of the box, no backend required.
-
----
-
-## 🚀 Installation
+### Installation & Setup
 
 ```bash
 npm install @dreamworld/session-storage
 ```
-OR
+
 ```bash
 yarn add @dreamworld/session-storage
 ```
+---
 
-## 📝 Usage
-### Import and Initialize
+### Basic Usage
+
+The package exports a single default class, `SessionStorage`. The import pattern is derivable from the module type and entry point declared in `package.json`:
 
 ```javascript
 import SessionStorage from "@dreamworld/session-storage";
 
-const session = new SessionStorage("myapp_session"); //The argument "myapp_session" is the prefix used for all session keys.
+const session = new SessionStorage();
 ```
+---
 
-### Set a value
-```javascript
-session.set("user", { id: 1, name: "Alice" });
-session.set("token", "abcdef");
-```
+### API Reference
 
-### Get a value
-```javascript
-console.log(session.get("user")); 
-// { id: 1, name: "Alice" }
-```
+#### Exports
 
-### Get all values
-```javascript
-console.log(session.getAll()); 
-// { user: { id: 1, name: "Alice" }, token: "abcdef" }
-```
-
-### Remove a key
-```javascript
-session.remove("token");
-```
-
-### Clear all session data
-```javascript
-session.clear(); //This removes all entries with the prefix `myapp_session_*` from localStorage.
-```
-
-### Subscribe to changes (cross-tab sync)
-```javascript
-session.subscribe((data) => {
-  console.log("Session updated:", data); // Object with all session keys
-});
-//This callback fires whenever session data changes — either in the same tab or in another tab.
-```
+| Export | Kind | Description |
+|--------|------|-------------|
+| `SessionStorage` | `export default class` | The sole exported member of the module. |
 
 ---
 
-## Demo
+## 2. Developer Guide / Architecture
 
-### Running the Demo
+### Architecture Overview
 
-1. Install dependencies:
-```bash
-npm install
-```
+| Observable Fact | Detail |
+|-----------------|--------|
+| Module format | ES Module (`"type": "module"` in `package.json`) |
+| Exported surface | Single `export default class SessionStorage {}` |
+| Implementation | Class body is empty — no constructor, fields, or methods present |
+| Design patterns | Not determinable from provided source |
+| Dependencies | None (no runtime dependencies declared in `package.json`) |
 
-2. Start the development server:
-```bash
-npm start
-```
-
-3. Open your browser to the displayed URL (usually http://localhost:8000)
-
-### Testing Cross-Tab Sync
-
-1. Open the demo page in multiple browser tabs
-2. Set values in one tab and watch them appear in others
-3. Close tabs one by one - data persists until the last tab
-4. Close all tabs and reopen - data should be cleared
+The file `session-storage.js` defines one class with no implementation. No design patterns, internal data flow, or module responsibilities can be identified from the current source.
 
 ---
-
-## ⚙️ How it Works
-- Each tab generates a unique `tabId`.
-- Tabs send a heartbeat every 4 seconds(`${prefix}_heartbeats`)
-- If no heartbeats are detected for >8 seconds, all session data is cleared.
-- Updates are stored both in **memory cache** and **localStorage**.
-- `storage` event ensures cross-tab synchronization.
